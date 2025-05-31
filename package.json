@@ -1,0 +1,22 @@
+{
+  "name": "tree-shake-code-split-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "analyze": "turbo analyze",
+    "test:tree-shake": "turbo test:tree-shake"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^14.0.0",
+    "turbo": "^1.10.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "npm@8.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

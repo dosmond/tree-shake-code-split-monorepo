@@ -1,0 +1,74 @@
+{
+  "name": "@mycompany/ui",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "./src/global-styles.ts"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./Button": {
+      "types": "./dist/Button.d.ts",
+      "import": "./dist/Button.mjs",
+      "require": "./dist/Button.js"
+    },
+    "./Card": {
+      "types": "./dist/Card.d.ts", 
+      "import": "./dist/Card.mjs",
+      "require": "./dist/Card.js"
+    },
+    "./Modal": {
+      "types": "./dist/Modal.d.ts",
+      "import": "./dist/Modal.mjs", 
+      "require": "./dist/Modal.js"
+    },
+    "./DataTable": {
+      "types": "./dist/DataTable.d.ts",
+      "import": "./dist/DataTable.mjs",
+      "require": "./dist/DataTable.js"
+    },
+    "./Charts": {
+      "types": "./dist/Charts.d.ts",
+      "import": "./dist/Charts.mjs",
+      "require": "./dist/Charts.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js"
+    },
+    "./heavy-utils": {
+      "types": "./dist/heavy-utils.d.ts",
+      "import": "./dist/heavy-utils.mjs", 
+      "require": "./dist/heavy-utils.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf dist",
+    "test:tree-shake": "node scripts/test-tree-shaking.js"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "eslint": "^8.0.0",
+    "react": "^18.0.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}

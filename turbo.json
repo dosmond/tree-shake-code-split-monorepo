@@ -1,0 +1,27 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+      "build": {
+        "dependsOn": ["^build"],
+        "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      },
+      "dev": {
+        "cache": false,
+        "persistent": true
+      },
+      "lint": {
+        "dependsOn": ["^build"]
+      },
+      "clean": {
+        "cache": false
+      },
+      "analyze": {
+        "dependsOn": ["build"],
+        "outputs": ["bundle-analyzer/**"]
+      },
+      "test:tree-shake": {
+        "dependsOn": ["build"],
+        "outputs": ["tree-shake-results/**"]
+      }
+    }
+  }
