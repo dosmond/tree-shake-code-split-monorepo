@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@mycompany/ui": ["./packages/ui/src"],
-      "@mycompany/utils": ["./packages/utils/src"]
+      "@mycompany/utils": ["./packages/utils/src"],
+      "@mycompany/bad-ui": ["./packages/bad-ui/src"]
     }
   },
   "include": [],
@@ -26,10 +27,16 @@
       "path": "./apps/web"
     },
     {
+      "path": "./apps/bad-web"
+    },
+    {
       "path": "./packages/ui"
     },
     {
       "path": "./packages/utils"
+    },
+    {
+      "path": "./packages/bad-ui"
     }
   ]
 } 

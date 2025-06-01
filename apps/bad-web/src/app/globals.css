@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles - similar to good app but with bad practice warnings */
+body {
+  font-family: Inter, sans-serif;
+  background-color: #fefefe;
+  color: #1f2937;
+}
+
+/* Prevent hydration issues with focus-visible */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Remove focus-visible polyfill artifacts */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Bad UI specific overrides */
+.bad-ui-loaded {
+  border: 2px solid red !important;
+  background: linear-gradient(45deg, #ffebee, #ffcdd2) !important;
+}
+
+/* Bad practices warning styling */
+.bad-warning {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+}
+
+.bad-indicator {
+  color: #dc2626;
+  font-weight: 600;
+} 

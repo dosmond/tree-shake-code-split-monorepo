@@ -9,7 +9,45 @@ const { execSync } = require('child_process')
  * 
  * Analyzes the built bundle to identify the heaviest imports and dependencies.
  * Provides insights into what's taking up the most space in your bundles.
+ * 
+ * Usage:
+ *   node scripts/test-tree-shaking.js [app-name]
+ *   
+ * Examples:
+ *   node scripts/test-tree-shaking.js web
+ *   node scripts/test-tree-shaking.js bad-web
  */
+
+// Parse command line arguments
+function parseArgs() {
+  const args = process.argv.slice(2)
+  let appName = args[0]
+  
+  // Default to 'web' if no argument provided
+  if (!appName) {
+    console.log('ℹ️  No app specified, defaulting to "web"')
+    console.log('   Usage: node scripts/test-tree-shaking.js [web|bad-web]\n')
+    appName = 'web'
+  }
+  
+  // Validate app name
+  const validApps = ['web', 'bad-web']
+  if (!validApps.includes(appName)) {
+    console.error(`❌ Invalid app name: "${appName}"`)
+    console.error(`   Valid options: ${validApps.join(', ')}`)
+    process.exit(1)
+  }
+  
+  const appDir = `apps/${appName}`
+  
+  // Check if app directory exists
+  if (!fs.existsSync(appDir)) {
+    console.error(`❌ App directory not found: ${appDir}`)
+    process.exit(1)
+  }
+  
+  return { appName, appDir }
+}
 
 // Common libraries and frameworks to detect
 const KNOWN_LIBRARIES = [
@@ -226,22 +264,25 @@ function detectLibraries(content) {
 }
 
 async function analyzeBundle() {
-  console.log('📊 Analyzing bundle composition and heaviest imports...\n')
+  const { appName, appDir } = parseArgs()
+  
+  console.log(`📊 Analyzing bundle composition for "${appName}" app...\n`)
   
   // Build the project first
-  console.log('🔨 Building project...')
+  console.log(`🔨 Building ${appName} app...`)
   try {
-    execSync('npm run build', { stdio: 'inherit' })
+    execSync(`npm run build --workspace=${appDir}`, { stdio: 'inherit' })
   } catch (error) {
     console.error('❌ Build failed:', error.message)
     process.exit(1)
   }
   
   // Find built JavaScript files
-  const buildDir = path.join(process.cwd(), 'apps/web/.next/static/chunks')
+  const buildDir = path.join(process.cwd(), `${appDir}/.next/static/chunks`)
   
   if (!fs.existsSync(buildDir)) {
     console.error('❌ Build directory not found:', buildDir)
+    console.error('   Make sure the app has been built successfully')
     process.exit(1)
   }
   
@@ -250,7 +291,7 @@ async function analyzeBundle() {
     .map(file => path.join(buildDir, file))
   
   // Also check pages directory
-  const pagesDir = path.join(process.cwd(), '.next/static/chunks/pages')
+  const pagesDir = path.join(process.cwd(), `${appDir}/.next/static/chunks/pages`)
   if (fs.existsSync(pagesDir)) {
     const pageFiles = fs.readdirSync(pagesDir)
       .filter(file => file.endsWith('.js'))
@@ -258,7 +299,7 @@ async function analyzeBundle() {
     jsFiles.push(...pageFiles)
   }
   
-  console.log(`📁 Found ${jsFiles.length} JavaScript files to analyze\n`)
+  console.log(`📁 Found ${jsFiles.length} JavaScript files to analyze in ${appName} app\n`)
   
   let totalSize = 0
   let mainBundleSize = 0
@@ -410,7 +451,8 @@ function formatBytes(bytes) {
 if (require.main === module) {
   analyzeBundle()
     .then(success => {
-      console.log('\n✅ Bundle analysis completed!')
+      const { appName } = parseArgs()
+      console.log(`\n✅ Bundle analysis completed for "${appName}" app!`)
       process.exit(success ? 0 : 1)
     })
     .catch(error => {
