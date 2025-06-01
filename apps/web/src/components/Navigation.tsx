@@ -17,9 +17,17 @@ export function Navigation() {
   const router = useRouter()
   const [prefetchedRoutes, setPrefetchedRoutes] = useState<Set<string>>(new Set())
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
 
   // Development vs Production prefetching strategy
   useEffect(() => {
+    if (!isHydrated) return
+
     const prefetchRoute = (href: string) => {
       if (!prefetchedRoutes.has(href)) {
         router.prefetch(href)
@@ -45,9 +53,10 @@ export function Navigation() {
           .forEach(route => prefetchRoute(route.href))
       }, 2000)
     }
-  }, [router, prefetchedRoutes])
+  }, [router, prefetchedRoutes, isHydrated])
 
   const handleLinkHover = (href: string) => {
+    if (!isHydrated) return
     if (!prefetchedRoutes.has(href)) {
       router.prefetch(href)
       setPrefetchedRoutes(prev => new Set(prev).add(href))
@@ -82,7 +91,7 @@ export function Navigation() {
           <div className="hidden md:flex items-center space-x-1">
             {routes.map((route) => {
               const isActive = pathname === route.href
-              const isPrefetched = prefetchedRoutes.has(route.href)
+              const isPrefetched = isHydrated && prefetchedRoutes.has(route.href)
               
               return (
                 <div key={route.href} className="relative group">
@@ -134,19 +143,21 @@ export function Navigation() {
             </button>
           </div>
 
-          {/* Development Info */}
-          <div className="hidden lg:flex items-center text-xs text-gray-500 space-x-3">
-            <div className="flex items-center space-x-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-              <span>{process.env.NODE_ENV}</span>
+          {/* Development Info - Only show after hydration */}
+          {isHydrated && (
+            <div className="hidden lg:flex items-center text-xs text-gray-500 space-x-3">
+              <div className="flex items-center space-x-1">
+                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                <span>{process.env.NODE_ENV}</span>
+              </div>
+              <div>
+                Prefetched: {prefetchedRoutes.size}/{routes.length}
+              </div>
+              <div className="font-mono text-gray-400">
+                {pathname}
+              </div>
             </div>
-            <div>
-              Prefetched: {prefetchedRoutes.size}/{routes.length}
-            </div>
-            <div className="font-mono text-gray-400">
-              {pathname}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -155,7 +166,7 @@ export function Navigation() {
             <div className="space-y-1">
               {routes.map((route) => {
                 const isActive = pathname === route.href
-                const isPrefetched = prefetchedRoutes.has(route.href)
+                const isPrefetched = isHydrated && prefetchedRoutes.has(route.href)
                 
                 return (
                   <Link
@@ -192,12 +203,14 @@ export function Navigation() {
               })}
             </div>
             
-            {/* Mobile Development Info */}
-            <div className="mt-4 pt-2 border-t border-gray-200 px-3 space-y-1 text-xs text-gray-500">
-              <div>Environment: {process.env.NODE_ENV}</div>
-              <div>Prefetched: {prefetchedRoutes.size}/{routes.length} routes</div>
-              <div className="font-mono">{pathname}</div>
-            </div>
+            {/* Mobile Development Info - Only show after hydration */}
+            {isHydrated && (
+              <div className="mt-4 pt-2 border-t border-gray-200 px-3 space-y-1 text-xs text-gray-500">
+                <div>Environment: {process.env.NODE_ENV}</div>
+                <div>Prefetched: {prefetchedRoutes.size}/{routes.length} routes</div>
+                <div className="font-mono">{pathname}</div>
+              </div>
+            )}
           </div>
         )}
       </div>

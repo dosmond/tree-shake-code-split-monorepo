@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { Button } from '@mycompany/ui'
+import { Button } from '@mycompany/ui/Button'
 
 // Code splitting examples with different loading strategies
 
@@ -12,10 +12,7 @@ const DataTableDemo = dynamic(() => import('../../components/DataTableDemo'), {
   ssr: false
 })
 
-// 2. Component without loading (uses Suspense)
-const ChartsDemo = dynamic(() => import('../../components/ChartsDemo'), {
-  ssr: false
-})
+import ChartsDemo from '../../components/ChartsDemo'
 
 // 3. Conditional loading based on user action
 const HeavyAnalytics = dynamic(() => import('../../components/HeavyAnalytics'), {

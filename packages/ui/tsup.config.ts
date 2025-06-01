@@ -2,7 +2,6 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   entry: {
-    index: 'src/index.ts',
     Button: 'src/Button.tsx',
     Card: 'src/Card.tsx',
     Modal: 'src/Modal.tsx',

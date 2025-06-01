@@ -7,6 +7,16 @@ body {
   font-family: Inter, sans-serif;
 }
 
+/* Prevent hydration issues with focus-visible */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Remove focus-visible polyfill artifacts */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

@@ -7,7 +7,9 @@
     "lint": "turbo lint",
     "clean": "turbo clean",
     "analyze": "turbo analyze",
-    "test:tree-shake": "turbo test:tree-shake"
+    "test:tree-shake": "node scripts/test-tree-shaking.js",
+    "test:tree-shake:verbose": "node scripts/test-tree-shaking.js --verbose",
+    "test:tree-shake:watch": "node scripts/test-tree-shaking.js --watch"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.0",

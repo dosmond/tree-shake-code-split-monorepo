@@ -5,9 +5,6 @@ import { useState } from 'react'
 import { Button } from '@mycompany/ui/Button'
 import { formatCurrency } from '@mycompany/ui/utils'
 
-// DON'T import these - they should be tree shaken:
-// import { heavyUtility, LARGE_LOOKUP_TABLE, AdvancedAnalyticsEngine } from '@mycompany/ui'
-
 export default function TreeShakingDemo() {
   const [showAnalysis, setShowAnalysis] = useState(false)
   const [importedHeavy, setImportedHeavy] = useState(false)

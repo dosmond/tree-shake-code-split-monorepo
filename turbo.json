@@ -18,10 +18,6 @@
       "analyze": {
         "dependsOn": ["build"],
         "outputs": ["bundle-analyzer/**"]
-      },
-      "test:tree-shake": {
-        "dependsOn": ["build"],
-        "outputs": ["tree-shake-results/**"]
       }
     }
   }
